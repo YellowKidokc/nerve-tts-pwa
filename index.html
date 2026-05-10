@@ -588,6 +588,7 @@ window.addEventListener('beforeunload', () => synth.cancel());
 loadSettings();
 renderHistory();
 updateCharCount();
+textInput.focus();
 
 // SERVICE WORKER
 if ('serviceWorker' in navigator) {

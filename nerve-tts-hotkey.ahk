@@ -1,117 +1,80 @@
-; Labor of Love - AutoHotKey Quick Speak
-; CapsLock+C: Copy selected text → paste into Labor of Love → play
-; Requires: Labor of Love PWA installed in Edge
-;
-; INSTALL: Put this in your Startup folder or run manually.
-; If Labor of Love isn't open, it will open it first.
+; Labor of Love - AutoHotkey Quick Speak
+; CapsLock+C: Copy selected text, paste into Labor of Love, then play
+; CapsLock+X: Stop speaking
+; Requires AutoHotkey v2
 
-#NoEnv
+#Requires AutoHotkey v2.0
 #SingleInstance Force
-SetWorkingDir %A_ScriptDir%
+SetWorkingDir A_ScriptDir
+SetTitleMatchMode 2
 
-; ============================================
-; CONFIG - adjust these if needed
-; ============================================
-; The PWA window title (check Task Manager if different)
 TTS_WINDOW_TITLE := "Labor of Love"
-; Fallback: if PWA not found, open this URL
 TTS_URL := "https://nerve-tts.pages.dev/index.html"
-; Or local file path if not deployed:
-; TTS_URL := "D:\GitHub\nerve-tts-pwa\index.html"
 
-; ============================================
-; CapsLock + C = Quick Speak
-; ============================================
-CapsLock & c::
-    ; Save current clipboard
-    ClipSaved := ClipboardAll
-    Clipboard := ""
-    
-    ; Copy selected text
-    Send, ^c
-    ClipWait, 2
-    if (ErrorLevel) {
-        ToolTip, No text selected
-        Sleep, 1500
-        ToolTip
-        Clipboard := ClipSaved
+CapsLock & c::{
+    savedClipboard := ClipboardAll()
+    A_Clipboard := ""
+
+    Send "^c"
+    if !ClipWait(2) {
+        ToolTip "No text selected"
+        SetTimer ClearToolTip, -1500
+        A_Clipboard := savedClipboard
         return
     }
-    
-    CopiedText := Clipboard
-    
-    ; Find or launch Labor of Love
-    IfWinExist, %TTS_WINDOW_TITLE%
-    {
-        WinActivate
-    }
-    else
-    {
-        ; Try to find by partial title
-        SetTitleMatchMode, 2
-        IfWinExist, Labor of Love
-        {
-            WinActivate
-        }
-        else
-        {
-            ; Launch the PWA/URL
-            Run, %TTS_URL%
-            WinWait, Labor of Love,, 5
-            if (ErrorLevel) {
-                ToolTip, Could not open Labor of Love
-                Sleep, 2000
-                ToolTip
-                Clipboard := ClipSaved
-                return
-            }
-            WinActivate
-            Sleep, 1000  ; Wait for page to load
-        }
-    }
-    
-    Sleep, 200
-    
-    ; Focus the textarea and paste
-    ; The textarea has id="textInput" - we'll click it then paste
-    Send, {Tab}  ; Focus first focusable element (the textarea)
-    Sleep, 100
-    
-    ; Select all existing text and replace with new
-    Send, ^a
-    Sleep, 50
-    
-    ; Set clipboard to the copied text
-    Clipboard := CopiedText
-    Send, ^v
-    Sleep, 100
-    
-    ; Hit Ctrl+Enter to play
-    Send, ^{Enter}
-    
-    ; Restore original clipboard after a beat
-    Sleep, 500
-    Clipboard := ClipSaved
-    
-    ToolTip, ⚡ Speaking...
-    Sleep, 1500
-    ToolTip
-return
 
-; ============================================
-; CapsLock + X = Stop speaking
-; ============================================
-CapsLock & x::
-    SetTitleMatchMode, 2
-    IfWinExist, Labor of Love
-    {
-        WinActivate
-        Sleep, 100
-        Send, {Escape}
-    }
-return
+    copiedText := A_Clipboard
 
-; ============================================
-; Prevent CapsLock from toggling when used as modifier
-; ============================================
+    if WinExist(TTS_WINDOW_TITLE) {
+        WinActivate
+    } else if WinExist("Labor of Love") {
+        WinActivate
+    } else {
+        Run TTS_URL
+        if !WinWait("Labor of Love", , 5) {
+            ToolTip "Could not open Labor of Love"
+            SetTimer ClearToolTip, -2000
+            A_Clipboard := savedClipboard
+            return
+        }
+        WinActivate
+        Sleep 1000
+    }
+
+    Sleep 200
+
+    MouseGetPos &oldMouseX, &oldMouseY
+    WinGetPos &appX, &appY, &appW, &appH, "A"
+    Click appX + 48, appY + 124
+    MouseMove oldMouseX, oldMouseY, 0
+    Sleep 100
+
+    Send "^a"
+    Sleep 50
+
+    A_Clipboard := copiedText
+    Send "^v"
+    Sleep 150
+
+    Send "^{Enter}"
+
+    Sleep 500
+    A_Clipboard := savedClipboard
+
+    ToolTip "Speaking..."
+    SetTimer ClearToolTip, -1500
+}
+
+CapsLock & x::{
+    if WinExist("Labor of Love") {
+        WinActivate
+        Sleep 100
+        Send "{Escape}"
+    }
+}
+
 CapsLock::return
+
+ClearToolTip() {
+    ToolTip
+}
