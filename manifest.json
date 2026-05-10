@@ -1,8 +1,8 @@
-﻿{
+{
   "name": "Nerve TTS Engine",
   "short_name": "Nerve TTS",
-  "description": "Text-to-Speech engine for the Theophysics research program",
-  "start_url": "/",
+  "description": "Text-to-Speech engine — POF 2828",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#09090b",
   "theme_color": "#09090b",
