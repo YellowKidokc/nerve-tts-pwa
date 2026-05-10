@@ -1,4 +1,4 @@
-const CACHE = 'nerve-tts-v3';
+const CACHE = 'labor-of-love-v3';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', e => {

@@ -1,7 +1,7 @@
 {
-  "name": "Nerve TTS Engine",
-  "short_name": "Nerve TTS",
-  "description": "Text-to-Speech engine — POF 2828",
+  "name": "Labor of Love",
+  "short_name": "Labor",
+  "description": "Text-to-Speech engine for scripts, notes, and spoken drafts",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#09090b",

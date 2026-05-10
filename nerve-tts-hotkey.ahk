@@ -1,9 +1,9 @@
-; Nerve TTS - AutoHotKey Quick Speak
-; CapsLock+C: Copy selected text → paste into Nerve TTS → play
-; Requires: Nerve TTS PWA installed in Edge
+; Labor of Love - AutoHotKey Quick Speak
+; CapsLock+C: Copy selected text → paste into Labor of Love → play
+; Requires: Labor of Love PWA installed in Edge
 ;
 ; INSTALL: Put this in your Startup folder or run manually.
-; If Nerve TTS isn't open, it will open it first.
+; If Labor of Love isn't open, it will open it first.
 
 #NoEnv
 #SingleInstance Force
@@ -13,7 +13,7 @@ SetWorkingDir %A_ScriptDir%
 ; CONFIG - adjust these if needed
 ; ============================================
 ; The PWA window title (check Task Manager if different)
-TTS_WINDOW_TITLE := "Nerve TTS"
+TTS_WINDOW_TITLE := "Labor of Love"
 ; Fallback: if PWA not found, open this URL
 TTS_URL := "https://nerve-tts.pages.dev/index.html"
 ; Or local file path if not deployed:
@@ -40,7 +40,7 @@ CapsLock & c::
     
     CopiedText := Clipboard
     
-    ; Find or launch Nerve TTS
+    ; Find or launch Labor of Love
     IfWinExist, %TTS_WINDOW_TITLE%
     {
         WinActivate
@@ -49,7 +49,7 @@ CapsLock & c::
     {
         ; Try to find by partial title
         SetTitleMatchMode, 2
-        IfWinExist, Nerve TTS
+        IfWinExist, Labor of Love
         {
             WinActivate
         }
@@ -57,9 +57,9 @@ CapsLock & c::
         {
             ; Launch the PWA/URL
             Run, %TTS_URL%
-            WinWait, Nerve TTS,, 5
+            WinWait, Labor of Love,, 5
             if (ErrorLevel) {
-                ToolTip, Could not open Nerve TTS
+                ToolTip, Could not open Labor of Love
                 Sleep, 2000
                 ToolTip
                 Clipboard := ClipSaved
@@ -103,7 +103,7 @@ return
 ; ============================================
 CapsLock & x::
     SetTitleMatchMode, 2
-    IfWinExist, Nerve TTS
+    IfWinExist, Labor of Love
     {
         WinActivate
         Sleep, 100
