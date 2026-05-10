@@ -1,4 +1,4 @@
-const CACHE = 'labor-of-love-v3';
+const CACHE = 'labor-of-love-v4';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', e => {
@@ -16,6 +16,19 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  const isPageRequest = e.request.mode === 'navigate' || e.request.url.endsWith('/index.html');
+  if (isPageRequest) {
+    e.respondWith(
+      fetch(e.request).then(res =>
+        caches.open(CACHE).then(c => {
+          c.put(e.request, res.clone());
+          return res;
+        })
+      ).catch(() => caches.match(e.request).then(r => r || caches.match('/index.html')))
+    );
+    return;
+  }
+
   // Cache fonts from Google
   if (e.request.url.includes('fonts.googleapis.com') || e.request.url.includes('fonts.gstatic.com')) {
     e.respondWith(
