@@ -161,7 +161,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);wid
 
     <div class="setting-group">
       <div class="setting-label">Rate <span class="setting-value" id="rateVal">1.0</span></div>
-      <input type="range" class="setting-range" id="rateRange" min="0.5" max="2" step="0.05" value="1">
+      <input type="range" class="setting-range" id="rateRange" min="0.5" max="3" step="0.05" value="1">
     </div>
 
     <div class="setting-group">
@@ -239,7 +239,7 @@ const clearHistory = document.getElementById('clearHistory');
 const overlay = document.getElementById('overlay');
 
 // SPEED PRESETS
-const speeds = [0.85, 1, 1.15, 1.3, 1.5];
+const speeds = [0.85, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 3];
 let speedIdx = 1;
 
 // SETTINGS PERSISTENCE
