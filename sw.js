@@ -1,4 +1,4 @@
-const CACHE = 'labor-of-love-v4';
+const CACHE = 'labor-of-love-v5';
 const ASSETS = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', e => {

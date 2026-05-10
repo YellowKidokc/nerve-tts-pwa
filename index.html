@@ -202,6 +202,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);wid
 
 <script>
 const synth = window.speechSynthesis;
+const APP_VERSION = 'v5';
 let voices = [];
 let currentVoice = null;
 let isPlaying = false;
@@ -547,7 +548,7 @@ playBtn.addEventListener('click', togglePlay);
 
 // CHAR COUNT
 function updateCharCount() {
-  charCount.textContent = textInput.value.length + ' chars';
+  charCount.textContent = textInput.value.length + ' chars · ' + APP_VERSION;
 }
 textInput.addEventListener('input', updateCharCount);
 
